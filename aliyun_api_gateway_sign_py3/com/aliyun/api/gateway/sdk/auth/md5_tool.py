@@ -30,9 +30,13 @@ import base64
 
 
 def _get_md5(content):
-    fmd5 = hashlib.md5(content.encode())
-    return fmd5.hexdigest()
+    if isinstance(content, str):
+        fmd5 = hashlib.md5(content.encode())
+    else: #bytes
+        fmd5 = hashlib.md5(content)
+    return fmd5.digest() #digest() instead of hexdigest()
 
 
 def get_md5_base64_str(content):
-    return base64.encodestring(_get_md5(content)).strip()
+    #decode to str before strip()
+    return base64.encodestring(_get_md5(content)).decode().strip()
